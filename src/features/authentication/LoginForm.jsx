@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import Button from '../../ui/Button'
 import Form from '../../ui/Form'
 import FormRowVertical from '../../ui/FormRowVertical'
@@ -10,6 +11,7 @@ function LoginForm() {
   const [email, setEmail] = useState('jonas@example.com')
   const [password, setPassword] = useState('qweasdzxc')
   const { login, isLoading } = useLogin()
+  const { t } = useTranslation()
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -27,7 +29,7 @@ function LoginForm() {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <FormRowVertical label='Email address'>
+      <FormRowVertical label={t('loginForm.emailAddress')}>
         <Input
           type='email'
           id='email'
@@ -38,7 +40,7 @@ function LoginForm() {
           disabled={isLoading}
         />
       </FormRowVertical>
-      <FormRowVertical label='Password'>
+      <FormRowVertical label={t('loginForm.password')}>
         <Input
           type='password'
           id='password'
@@ -50,7 +52,7 @@ function LoginForm() {
       </FormRowVertical>
       <FormRowVertical>
         <Button $size='large' disabled={isLoading}>
-          {isLoading ? <SpinnerMini /> : 'Log in'}
+          {isLoading ? <SpinnerMini /> : t('loginForm.logIn')}
         </Button>
       </FormRowVertical>
     </Form>

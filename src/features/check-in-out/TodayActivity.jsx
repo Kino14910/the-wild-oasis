@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import Heading from '../../ui/Heading'
@@ -41,10 +42,12 @@ const NoActivity = styled.p`
 
 function TodayActivity() {
   const { activities, isLoading } = useTodayActivity()
+  const { t } = useTranslation()
+
   return (
     <StyledToday>
       <Row type='horizontal'>
-        <Heading as='h2'>Today</Heading>
+        <Heading as='h2'>{t('todayActivity.today')}</Heading>
       </Row>
 
       {!isLoading ? (
@@ -55,7 +58,7 @@ function TodayActivity() {
             ))}
           </TodayList>
         ) : (
-          <NoActivity>No activity today...</NoActivity>
+          <NoActivity>{t('todayActivity.noActivity')}</NoActivity>
         )
       ) : (
         <Spinner />

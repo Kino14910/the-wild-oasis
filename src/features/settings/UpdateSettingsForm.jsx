@@ -4,6 +4,7 @@ import Input from '../../ui/Input'
 import Spinner from '../../ui/Spinner'
 import { useSettings } from './useSettings'
 import { useUpdateSetting } from './useUpdateSetting'
+import { useTranslation } from 'react-i18next'
 
 function UpdateSettingsForm() {
   const {
@@ -17,6 +18,7 @@ function UpdateSettingsForm() {
   } = useSettings()
 
   const { isUpdating, updateSetting } = useUpdateSetting()
+  const { t } = useTranslation()
 
   if (isLoading) return <Spinner />
 
@@ -30,7 +32,7 @@ function UpdateSettingsForm() {
 
   return (
     <Form>
-      <FormRow label='Minimum nights/booking'>
+      <FormRow label={t('updateSettingsForm.minNights')}>
         <Input
           type='number'
           id='min-nights'
@@ -40,7 +42,7 @@ function UpdateSettingsForm() {
         />
       </FormRow>
 
-      <FormRow label='Maximum nights/booking'>
+      <FormRow label={t('updateSettingsForm.maxNights')}>
         <Input
           type='number'
           id='max-nights'
@@ -50,7 +52,7 @@ function UpdateSettingsForm() {
         />
       </FormRow>
 
-      <FormRow label='Maximum guests/booking'>
+      <FormRow label={t('updateSettingsForm.maxGuests')}>
         <Input
           type='number'
           id='max-guests'
@@ -60,7 +62,7 @@ function UpdateSettingsForm() {
         />
       </FormRow>
 
-      <FormRow label='Breakfast price'>
+      <FormRow label={t('updateSettingsForm.breakfastPrice')}>
         <Input
           type='number'
           id='breakfast-price'

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import Button from '../../ui/Button'
 import FileInput from '../../ui/FileInput'
@@ -19,6 +20,7 @@ function UpdateUserDataForm() {
   } = useUser()
 
   const { updateUser, isUpdating } = useUpdateUser()
+  const { t } = useTranslation()
 
   const [fullName, setFullName] = useState(currentFullName)
   const [avatar, setAvatar] = useState(null)
@@ -44,11 +46,11 @@ function UpdateUserDataForm() {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <FormRow label='Email address'>
+      <FormRow label={t('updateUserDataForm.emailAddress')}>
         <Input value={email} disabled />
       </FormRow>
 
-      <FormRow label='Full name'>
+      <FormRow label={t('updateUserDataForm.fullName')}>
         <Input
           type='text'
           value={fullName}
@@ -58,7 +60,7 @@ function UpdateUserDataForm() {
         />
       </FormRow>
 
-      <FormRow label='Avatar image'>
+      <FormRow label={t('updateUserDataForm.avatarImage')}>
         <FileInput
           id='avatar'
           accept='image/*'
@@ -74,9 +76,9 @@ function UpdateUserDataForm() {
           disabled={isUpdating}
           onClick={handleCancel}
         >
-          Cancel
+          {t('updateUserDataForm.cancel')}
         </Button>
-        <Button disabled={isUpdating}>Update account</Button>
+        <Button disabled={isUpdating}>{t('updateUserDataForm.updateAccount')}</Button>
       </FormRow>
     </Form>
   )

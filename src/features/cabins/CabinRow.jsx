@@ -1,4 +1,5 @@
 import { HiPencil, HiSquare2Stack, HiTrash } from 'react-icons/hi2'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import ConfirmDelete from '../../ui/ConfirmDelete'
 import Menus from '../../ui/Menus'
@@ -59,6 +60,7 @@ function CabinRow({ cabin }) {
     description,
   } = cabin
 
+  const { t } = useTranslation()
   const { isDeleting, deleteCabin } = useDeleteCabin()
   const { isCreating, createCabin } = useCreateCabin()
 
@@ -82,7 +84,7 @@ function CabinRow({ cabin }) {
     <Table.Row>
       <Img src={image} />
       <Cabin>{name}</Cabin>
-      <div>Fits up to {maxCapacity} guests</div>
+      <div>{t('cabinRow.fitsGuests', { count: maxCapacity })}</div>
       <Price>{formatCurrency(regularPrice * (isValentine() ? 1.2 : 1))}</Price>
       {discount ? (
         <Discount>{formatCurrency(discount)}</Discount>
@@ -100,15 +102,15 @@ function CabinRow({ cabin }) {
                 onClick={handleDuplicate}
                 disabled={isCreating}
               >
-                Duplicate
+                {t('cabinRow.duplicate')}
               </Menus.Button>
 
               <Modal.Open opens='edit'>
-                <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+                <Menus.Button icon={<HiPencil />}>{t('cabinRow.edit')}</Menus.Button>
               </Modal.Open>
 
               <Modal.Open opens='delete'>
-                <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+                <Menus.Button icon={<HiTrash />}>{t('cabinRow.delete')}</Menus.Button>
               </Modal.Open>
             </Menus.List>
 
@@ -118,7 +120,7 @@ function CabinRow({ cabin }) {
 
             <Modal.Window name='delete'>
               <ConfirmDelete
-                resourceName='cabins'
+                resourceName={t('cabinRow.resourceName')}
                 disabled={isDeleting}
                 onConfirm={() => deleteCabin(cabinId)}
               />

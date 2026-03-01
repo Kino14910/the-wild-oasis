@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import Button from '../../ui/Button'
 import Form from '../../ui/Form'
 import FormRow from '../../ui/FormRow'
@@ -9,6 +10,7 @@ import { useUpdateUser } from './useUpdateUser'
 function UpdatePasswordForm() {
   const { register, handleSubmit, formState, getValues, reset } = useForm()
   const { errors } = formState
+  const { t } = useTranslation()
 
   const { updateUser, isUpdating } = useUpdateUser()
 
@@ -18,40 +20,40 @@ function UpdatePasswordForm() {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormRow label='Password (min 8 characters)' error={errors?.password}>
+      <FormRow label={t('updatePasswordForm.passwordLabel')} error={errors?.password}>
         <Input
           type='password'
           id='password'
           autoComplete='current-password'
           disabled={isUpdating}
           {...register('password', {
-            required: 'This field is required',
+            required: t('updatePasswordForm.required'),
             minLength: {
               value: 8,
-              message: 'Password needs a minimum of 8 characters',
+              message: t('updatePasswordForm.minLength'),
             },
           })}
         />
       </FormRow>
 
-      <FormRow label='Confirm password' error={errors?.passwordConfirm}>
+      <FormRow label={t('updatePasswordForm.confirmPassword')} error={errors?.passwordConfirm}>
         <Input
           type='password'
           autoComplete='new-password'
           id='passwordConfirm'
           disabled={isUpdating}
           {...register('passwordConfirm', {
-            required: 'This field is required',
+            required: t('updatePasswordForm.required'),
             validate: value =>
-              getValues().password === value || 'Passwords need to match',
+              getValues().password === value || t('updatePasswordForm.passwordsMatch'),
           })}
         />
       </FormRow>
       <FormRow>
         <Button onClick={reset} type='reset' $variation='secondary'>
-          Cancel
+          {t('updatePasswordForm.cancel')}
         </Button>
-        <Button disabled={isUpdating}>Update password</Button>
+        <Button disabled={isUpdating}>{t('updatePasswordForm.updatePassword')}</Button>
       </FormRow>
     </Form>
   )
