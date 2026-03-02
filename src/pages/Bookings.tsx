@@ -9,7 +9,7 @@ function Bookings() {
 
   return (
     <>
-      <Row type='horizontal'>
+      <Row $type='horizontal'>
         <Heading as='h1'>{t('bookings.allHeading')}</Heading>
         <BookingTableOperations />
       </Row>

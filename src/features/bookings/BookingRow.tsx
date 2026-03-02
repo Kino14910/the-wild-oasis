@@ -92,7 +92,7 @@ function BookingRow({
         </span>
       </Stacked>
 
-      <Tag type={statusToTagName[status]}>{status.replace('-', ' ')}</Tag>
+      <Tag $type={statusToTagName[status]}>{status.replace('-', ' ')}</Tag>
 
       <Amount>{formatCurrency(totalPrice)}</Amount>
 
@@ -127,7 +127,9 @@ function BookingRow({
             )}
 
             <Modal.Open opens='delete'>
-              <Menus.Button icon={<HiMiniTrash />}>{t('bookingRow.delete')}</Menus.Button>
+              <Menus.Button icon={<HiMiniTrash />}>
+                {t('bookingRow.delete')}
+              </Menus.Button>
             </Modal.Open>
           </Menus.List>
         </Menus.Menu>

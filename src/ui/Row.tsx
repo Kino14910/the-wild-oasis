@@ -1,9 +1,13 @@
 import styled, { css } from 'styled-components'
 
-const Row = styled.div`
+type RowProps = {
+  $type?: 'horizontal' | 'vertical'
+}
+
+const Row = styled.div<RowProps>`
   display: flex;
-  ${({ type = 'vertical' }) => {
-    switch (type) {
+  ${({ $type = 'vertical' }) => {
+    switch ($type) {
       case 'horizontal':
         return css`
           justify-content: space-between;

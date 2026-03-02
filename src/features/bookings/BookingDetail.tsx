@@ -41,10 +41,10 @@ function BookingDetail() {
 
   return (
     <>
-      <Row type='horizontal'>
+      <Row $type='horizontal'>
         <HeadingGroup>
           <Heading as='h1'>Booking #{bookingId}</Heading>
-          <Tag type={statusToTagName[status]}>{status.replace('-', ' ')}</Tag>
+          <Tag $type={statusToTagName[status]}>{status.replace('-', ' ')}</Tag>
         </HeadingGroup>
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
       </Row>

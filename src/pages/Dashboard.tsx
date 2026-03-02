@@ -9,7 +9,7 @@ function Dashboard() {
 
   return (
     <>
-      <Row type='horizontal'>
+      <Row $type='horizontal'>
         <Heading as='h1'>{t('dashboard.heading')}</Heading>
         <DashboardFilter />
       </Row>

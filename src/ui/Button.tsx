@@ -1,5 +1,15 @@
 import styled, { css } from 'styled-components'
 
+type ButtonProps = {
+  $size?: 'small' | 'medium' | 'large'
+  $variation?: 'primary' | 'secondary' | 'danger'
+  children: React.ReactNode
+  disabled?: boolean
+  onClick?: () => void
+  type?: 'button' | 'submit' | 'reset'
+  icon?: any
+}
+
 const sizes = {
   small: css`
     font-size: 1.2rem;
@@ -48,32 +58,15 @@ const variations = {
   `,
 }
 
-const Button = styled.button`
+const Button = styled.button<ButtonProps>`
   border: none;
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);
 
-  // 过时的写法， 配合页面底部的Button.defaultProps使用
-  /* ${props => sizes[props.size]}
-  ${props => variations[props.variation]} */
-
-  /* ${props => {
-    const { $size = 'medium', $variation = 'primary' } = props
-    return css`
-      ${sizes[$size]}
-      ${variations[$variation]}
-    `
-  }} */
-    //上面的写法可以换成下面这样，在参数处解构，看起来更简洁
   ${({ $size = 'medium', $variation = 'primary' }) => css`
     ${sizes[$size]}
     ${variations[$variation]}
   `}
 `
-
-// Button.defaultProps = {
-//   variation: 'primary',
-//   size: 'medium',
-// }
 
 export default Button

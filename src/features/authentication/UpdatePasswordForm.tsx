@@ -15,12 +15,15 @@ function UpdatePasswordForm() {
   const { updateUser, isUpdating } = useUpdateUser()
 
   function onSubmit({ password }) {
-    updateUser({ password }, { onSuccess: reset })
+    updateUser({ password }, { onSuccess: () => reset })
   }
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormRow label={t('updatePasswordForm.passwordLabel')} error={errors?.password}>
+      <FormRow
+        label={t('updatePasswordForm.passwordLabel')}
+        error={errors?.password}
+      >
         <Input
           type='password'
           id='password'
@@ -36,7 +39,10 @@ function UpdatePasswordForm() {
         />
       </FormRow>
 
-      <FormRow label={t('updatePasswordForm.confirmPassword')} error={errors?.passwordConfirm}>
+      <FormRow
+        label={t('updatePasswordForm.confirmPassword')}
+        error={errors?.passwordConfirm}
+      >
         <Input
           type='password'
           autoComplete='new-password'
@@ -45,15 +51,20 @@ function UpdatePasswordForm() {
           {...register('passwordConfirm', {
             required: t('updatePasswordForm.required'),
             validate: value =>
-              getValues().password === value || t('updatePasswordForm.passwordsMatch'),
+              getValues().password === value ||
+              t('updatePasswordForm.passwordsMatch'),
           })}
         />
       </FormRow>
       <FormRow>
-        <Button onClick={reset} type='reset' $variation='secondary'>
-          {t('updatePasswordForm.cancel')}
-        </Button>
-        <Button disabled={isUpdating}>{t('updatePasswordForm.updatePassword')}</Button>
+        <>
+          <Button onClick={reset} type='reset' $variation='secondary'>
+            {t('updatePasswordForm.cancel')}
+          </Button>
+          <Button disabled={isUpdating}>
+            {t('updatePasswordForm.updatePassword')}
+          </Button>
+        </>
       </FormRow>
     </Form>
   )

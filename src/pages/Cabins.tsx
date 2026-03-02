@@ -10,7 +10,7 @@ function Cabins() {
 
   return (
     <>
-      <Row type='horizontal'>
+      <Row $type='horizontal'>
         <Heading as='h1'>{t('cabins.allHeading')}</Heading>
         <CabinTableOperations />
       </Row>

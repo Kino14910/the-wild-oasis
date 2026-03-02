@@ -9,7 +9,7 @@ import { useSignup } from './useSignup'
 // Email regex: /\S+@\S+\.\S+/
 
 function SignupForm() {
-  const { signup, isLoading } = useSignup()
+  const { signup, isPending } = useSignup()
   const { register, handleSubmit, getValues, reset, formState } = useForm()
   const { errors } = formState
   const { t } = useTranslation()
@@ -28,7 +28,7 @@ function SignupForm() {
         <Input
           type='text'
           id='fullName'
-          disabled={isLoading}
+          disabled={isPending}
           {...register('fullName', { required: t('signupForm.required') })}
         />
       </FormRow>
@@ -37,7 +37,7 @@ function SignupForm() {
         <Input
           type='email'
           id='email'
-          disabled={isLoading}
+          disabled={isPending}
           {...register('email', {
             required: t('signupForm.required'),
             pattern: {
@@ -52,7 +52,7 @@ function SignupForm() {
         <Input
           type='password'
           id='password'
-          disabled={isLoading}
+          disabled={isPending}
           {...register('password', {
             required: t('signupForm.required'),
             minLength: {
@@ -63,11 +63,14 @@ function SignupForm() {
         />
       </FormRow>
 
-      <FormRow label={t('signupForm.repeatPassword')} error={errors?.passwordConfirm}>
+      <FormRow
+        label={t('signupForm.repeatPassword')}
+        error={errors?.passwordConfirm}
+      >
         <Input
           type='password'
           id='passwordConfirm'
-          disabled={isLoading}
+          disabled={isPending}
           {...register('passwordConfirm', {
             required: t('signupForm.required'),
             validate: value =>
@@ -78,15 +81,17 @@ function SignupForm() {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button
-          variation='secondary'
-          type='reset'
-          onClick={reset}
-          disabled={isLoading}
-        >
-          {t('signupForm.cancel')}
-        </Button>
-        <Button>{t('signupForm.createUser')}</Button>
+        <>
+          <Button
+            $variation='secondary'
+            type='reset'
+            onClick={reset}
+            disabled={isPending}
+          >
+            {t('signupForm.cancel')}
+          </Button>
+          <Button>{t('signupForm.createUser')}</Button>
+        </>
       </FormRow>
     </Form>
   )

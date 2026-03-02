@@ -46,7 +46,7 @@ function TodayActivity() {
 
   return (
     <StyledToday>
-      <Row type='horizontal'>
+      <Row $type='horizontal'>
         <Heading as='h2'>{t('todayActivity.today')}</Heading>
       </Row>
 

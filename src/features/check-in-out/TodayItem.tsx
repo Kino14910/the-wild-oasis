@@ -1,5 +1,5 @@
-import { Link } from 'react-router'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router'
 import styled from 'styled-components'
 import Button from '../../ui/Button'
 import { Flag } from '../../ui/Flag'
@@ -32,10 +32,17 @@ export default function TodayItem({
 
   return (
     <StyledTodayItem>
-      {status === 'unconfirmed' && <Tag type='green'>{t('todayItem.arriving')}</Tag>}
-      {status === 'checked-in' && <Tag type='blue'>{t('todayItem.departing')}</Tag>}
+      {status === 'unconfirmed' && (
+        <Tag $type='green'>{t('todayItem.arriving')}</Tag>
+      )}
+      {status === 'checked-in' && (
+        <Tag $type='blue'>{t('todayItem.departing')}</Tag>
+      )}
 
-      <Flag src={guests.countryFlag} alt={t('todayItem.flagOf', { country: guests.country })} />
+      <Flag
+        src={guests.countryFlag}
+        alt={t('todayItem.flagOf', { country: guests.country })}
+      />
       <Guest>{guests.fullName}</Guest>
       <div>{t('todayItem.nights', { count: numNights })}</div>
 

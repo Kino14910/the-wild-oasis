@@ -10,7 +10,7 @@ import { useLogin } from './useLogin'
 function LoginForm() {
   const [email, setEmail] = useState('jonas@example.com')
   const [password, setPassword] = useState('qweasdzxc')
-  const { login, isLoading } = useLogin()
+  const { login, isPending } = useLogin()
   const { t } = useTranslation()
 
   function handleSubmit(e) {
@@ -37,7 +37,7 @@ function LoginForm() {
           autoComplete='username'
           value={email}
           onChange={e => setEmail(e.target.value)}
-          disabled={isLoading}
+          disabled={isPending}
         />
       </FormRowVertical>
       <FormRowVertical label={t('loginForm.password')}>
@@ -47,12 +47,12 @@ function LoginForm() {
           autoComplete='current-password'
           value={password}
           onChange={e => setPassword(e.target.value)}
-          disabled={isLoading}
+          disabled={isPending}
         />
       </FormRowVertical>
       <FormRowVertical>
-        <Button $size='large' disabled={isLoading}>
-          {isLoading ? <SpinnerMini /> : t('loginForm.logIn')}
+        <Button $size='large' disabled={isPending}>
+          {isPending ? <SpinnerMini /> : t('loginForm.logIn')}
         </Button>
       </FormRowVertical>
     </Form>

@@ -1,5 +1,5 @@
-import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 
 import { useForm } from 'react-hook-form'
 import Button from '../../ui/Button'
@@ -20,7 +20,18 @@ const Error = styled.span`
   color: var(--color-red-700);
 `
 
-function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
+type Cabin = {
+  id: string
+  [key: string]: any
+}
+
+function CreateCabinForm({
+  cabinToEdit = {},
+  onCloseModal,
+}: {
+  cabinToEdit?: Partial<Cabin>
+  onCloseModal?: () => void
+}) {
   const { t } = useTranslation()
   const { id: editId, ...editValues } = cabinToEdit
   const isEditSession = Boolean(editId)
@@ -77,7 +88,10 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
         />
       </FormRow>
 
-      <FormRow label={t('createCabinForm.maxCapacity')} error={errors.maxCapacity}>
+      <FormRow
+        label={t('createCabinForm.maxCapacity')}
+        error={errors.maxCapacity}
+      >
         <Input
           type='number'
           id='maxCapacity'
@@ -89,7 +103,10 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
         />
       </FormRow>
 
-      <FormRow label={t('createCabinForm.regularPrice')} error={errors.regularPrice}>
+      <FormRow
+        label={t('createCabinForm.regularPrice')}
+        error={errors.regularPrice}
+      >
         <Input
           type='number'
           id='regularPrice'
@@ -120,13 +137,17 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
         />
       </FormRow>
 
-      <FormRow label={t('createCabinForm.description')} error={errors.description}>
+      <FormRow
+        label={t('createCabinForm.description')}
+        error={errors.description}
+      >
         <Textarea
-          type='number'
           id='description'
           defaultValue=''
           disabled={isWorking}
-          {...register('description', { required: t('createCabinForm.required') })}
+          {...register('description', {
+            required: t('createCabinForm.required'),
+          })}
         />
       </FormRow>
 
@@ -143,18 +164,22 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button
-          $variation='secondary'
-          type='reset'
-          disabled={isWorking}
-          onClick={() => onCloseModal?.()}
-        >
-          {t('createCabinForm.cancel')}
-        </Button>
+        <>
+          <Button
+            $variation='secondary'
+            type='reset'
+            disabled={isWorking}
+            onClick={() => onCloseModal?.()}
+          >
+            {t('createCabinForm.cancel')}
+          </Button>
 
-        <Button disabled={isWorking}>
-          {isEditSession ? t('createCabinForm.editCabin') : t('createCabinForm.createCabin')}
-        </Button>
+          <Button disabled={isWorking}>
+            {isEditSession
+              ? t('createCabinForm.editCabin')
+              : t('createCabinForm.createCabin')}
+          </Button>
+        </>
       </FormRow>
     </Form>
   )

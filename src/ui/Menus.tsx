@@ -29,13 +29,17 @@ const StyledToggle = styled.button`
   }
 `
 
-const StyledList = styled.ul`
+type ListProps = {
+  $position: { x: number; y: number }
+}
+
+const StyledList = styled.ul<ListProps>`
   position: fixed;
 
   background-color: var(--color-grey-0);
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius-md);
-  ${({ position: { x, y } }) => css`
+  ${({ $position: { x, y } }) => css`
     left: ${x}px;
     top: ${y}px;
   `}
@@ -66,7 +70,15 @@ const StyledButton = styled.button`
   }
 `
 
-const MenuContext = createContext()
+type MenuContextType = {
+  openId: string
+  open: (id: string) => void
+  close: () => void
+  position: { x: number; y: number }
+  setPosition: (position: { x: number; y: number }) => void
+}
+
+const MenuContext = createContext<MenuContextType>(undefined)
 
 function Menus({ children }) {
   const [openId, setOpenId] = useState('false')
@@ -100,17 +112,32 @@ function Toggle({ id }) {
 
 function List({ id, children }) {
   const { openId, position, close } = useContext(MenuContext)
-  const ref = useOutsideClick(close, false)
+  const ref = useOutsideClick(close)
   if (openId !== id) return null
   return createPortal(
-    <StyledList position={position} ref={ref}>
+    <StyledList
+      $position={position}
+      ref={ref as React.RefObject<HTMLUListElement>}
+    >
       {children}
     </StyledList>,
     document.body,
   )
 }
 
-function Button({ icon, label, onClick, children }) {
+function Button({
+  icon,
+  label,
+  onClick,
+  children,
+  disabled,
+}: {
+  icon: any
+  label?: string
+  onClick?: () => void
+  children?: React.ReactNode
+  disabled?: boolean
+}) {
   const { close } = useContext(MenuContext)
   function handleClick() {
     onClick?.()
@@ -118,7 +145,7 @@ function Button({ icon, label, onClick, children }) {
   }
   return (
     <li>
-      <StyledButton onClick={handleClick}>
+      <StyledButton onClick={handleClick} disabled={disabled}>
         {icon} {label} {children}
       </StyledButton>
     </li>
