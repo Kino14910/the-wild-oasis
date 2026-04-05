@@ -1,8 +1,10 @@
-import { HiPencil, HiSquare2Stack, HiTrash } from 'react-icons/hi2'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { HiPencil, HiSquare2Stack, HiTrash } from 'react-icons/hi2'
 import styled from 'styled-components'
+
 import ConfirmDelete from '../../ui/ConfirmDelete'
-import Menus from '../../ui/Menus'
+import Menu from '../../ui/Menus'
 import Modal from '../../ui/Modal'
 import Table from '../../ui/Table'
 import { formatCurrency } from '../../utils/helpers'
@@ -64,6 +66,9 @@ function CabinRow({ cabin }) {
   const { isDeleting, deleteCabin } = useDeleteCabin()
   const { isCreating, createCabin } = useCreateCabin()
 
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+
   function isValentine() {
     const today = new Date()
     return today.getMonth() === 1 && today.getDate() === 21
@@ -92,40 +97,50 @@ function CabinRow({ cabin }) {
         <span>&mdash;</span>
       )}
       <div>
-        <Modal>
-          <Menus.Menu>
-            <Menus.Toggle id={cabinId} />
+        <Menu>
+          <Menu.Button
+            icon={<HiSquare2Stack />}
+            onClick={handleDuplicate}
+            disabled={isCreating}
+          >
+            {t('cabinRow.duplicate')}
+          </Menu.Button>
 
-            <Menus.List id={cabinId}>
-              <Menus.Button
-                icon={<HiSquare2Stack />}
-                onClick={handleDuplicate}
-                disabled={isCreating}
-              >
-                {t('cabinRow.duplicate')}
-              </Menus.Button>
+          <Menu.Button
+            icon={<HiPencil />}
+            onClick={() => setIsEditModalOpen(true)}
+          >
+            {t('cabinRow.edit')}
+          </Menu.Button>
 
-              <Modal.Open opens='edit'>
-                <Menus.Button icon={<HiPencil />}>{t('cabinRow.edit')}</Menus.Button>
-              </Modal.Open>
+          <Menu.Button
+            icon={<HiTrash />}
+            onClick={() => setIsDeleteModalOpen(true)}
+          >
+            {t('cabinRow.delete')}
+          </Menu.Button>
+        </Menu>
 
-              <Modal.Open opens='delete'>
-                <Menus.Button icon={<HiTrash />}>{t('cabinRow.delete')}</Menus.Button>
-              </Modal.Open>
-            </Menus.List>
+        <Modal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+        >
+          <CreateCabinForm
+            cabinToEdit={cabin}
+            onCloseModal={() => setIsEditModalOpen(false)}
+          />
+        </Modal>
 
-            <Modal.Window name='edit'>
-              <CreateCabinForm cabinToEdit={cabin} />
-            </Modal.Window>
-
-            <Modal.Window name='delete'>
-              <ConfirmDelete
-                resourceName={t('cabinRow.resourceName')}
-                disabled={isDeleting}
-                onConfirm={() => deleteCabin(cabinId)}
-              />
-            </Modal.Window>
-          </Menus.Menu>
+        <Modal
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+        >
+          <ConfirmDelete
+            resourceName={t('cabinRow.resourceName')}
+            disabled={isDeleting}
+            onConfirm={() => deleteCabin(cabinId)}
+            onCloseModal={() => setIsDeleteModalOpen(false)}
+          />
         </Modal>
       </div>
     </Table.Row>

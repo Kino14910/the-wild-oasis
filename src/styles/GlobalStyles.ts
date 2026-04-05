@@ -139,6 +139,11 @@ select {
   color: inherit;
 }
 
+select,
+::picker(select) {
+  appearance: base-select;
+}
+
 button {
   cursor: pointer;
 }

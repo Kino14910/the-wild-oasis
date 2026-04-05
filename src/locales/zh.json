@@ -113,7 +113,7 @@
         "discount": "折扣"
     },
     "cabinRow": {
-        "fitsGuests": "可容纳 {{count}} 位客人",
+        "fitsGuests": "{{count}} 位客人",
         "duplicate": "复制",
         "edit": "编辑",
         "delete": "删除",

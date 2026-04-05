@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router'
 import Empty from '../../ui/Empty'
-import Menus from '../../ui/Menus'
 import Spinner from '../../ui/Spinner'
 import Table from '../../ui/Table'
 import CabinRow from './CabinRow'
@@ -39,24 +38,21 @@ function CabinTable() {
   )
 
   return (
-    <Menus>
-      <Table $columns='0.6fr 1.8fr 2.2fr 1fr 1fr 1fr'>
-        <Table.Header>
-          <div></div>
-          <div>{t('cabinTable.cabin')}</div>
-          <div>{t('cabinTable.capacity')}</div>
-          <div>{t('cabinTable.price')}</div>
-          <div>{t('cabinTable.discount')}</div>
-          <div></div>
-        </Table.Header>
+    <Table $columns='0.6fr 1.8fr 2.2fr 1fr 1fr 1fr'>
+      <Table.Header>
+        <div></div>
+        <div>{t('cabinTable.cabin')}</div>
+        <div>{t('cabinTable.capacity')}</div>
+        <div>{t('cabinTable.price')}</div>
+        <div>{t('cabinTable.discount')}</div>
+        <div></div>
+      </Table.Header>
 
-        <Table.Body
-          // data={cabins}
-          data={filteredCabins}
-          render={cabin => <CabinRow cabin={cabin} key={cabin.id} />}
-        />
-      </Table>
-    </Menus>
+      <Table.Body
+        data={filteredCabins}
+        render={cabin => <CabinRow cabin={cabin} key={cabin.id} />}
+      />
+    </Table>
   )
 }
 

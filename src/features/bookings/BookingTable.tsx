@@ -1,5 +1,4 @@
 import Empty from '../../ui/Empty'
-import Menus from '../../ui/Menus'
 import Pagination from '../../ui/Pagination'
 import Spinner from '../../ui/Spinner'
 import Table from '../../ui/Table'
@@ -16,7 +15,7 @@ function BookingTable() {
   if (!bookings.length) return <Empty resourceName='bookings' />
 
   return (
-    <Menus>
+    <>
       <Table $columns='0.6fr 2fr 2.4fr 1.4fr 1fr 3.2rem'>
         <Table.Header>
           <div>{t('bookingTable.cabin')}</div>
@@ -33,10 +32,8 @@ function BookingTable() {
         />
       </Table>
 
-      <Table.Footer>
-        <Pagination count={count} />
-      </Table.Footer>
-    </Menus>
+      <Pagination count={count} />
+    </>
   )
 }
 

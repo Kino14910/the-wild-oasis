@@ -1,13 +1,12 @@
-import { createContext, useContext, useState } from 'react'
-import { createPortal } from 'react-dom'
+import React, { useEffect, useRef } from 'react'
 import { HiEllipsisVertical } from 'react-icons/hi2'
-import styled, { css } from 'styled-components'
-import { useOutsideClick } from '../hooks/useOutsideClick'
+import styled from 'styled-components'
 
 const StyledMenu = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  position: relative;
 `
 
 const StyledToggle = styled.button`
@@ -29,20 +28,16 @@ const StyledToggle = styled.button`
   }
 `
 
-type ListProps = {
-  $position: { x: number; y: number }
-}
-
-const StyledList = styled.ul<ListProps>`
-  position: fixed;
-
+const StyledPopover = styled.div`
   background-color: var(--color-grey-0);
+  color: var(--color-grey-900);
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius-md);
-  ${({ $position: { x, y } }) => css`
-    left: ${x}px;
-    top: ${y}px;
-  `}
+  padding: 0.4rem 0;
+  margin-top: 0.4rem;
+  border: none;
+  position-area: bottom;
+  min-width: max-content;
 `
 
 const StyledButton = styled.button`
@@ -52,6 +47,7 @@ const StyledButton = styled.button`
   border: none;
   padding: 1.2rem 2.4rem;
   font-size: 1.4rem;
+  line-height: 1.6rem;
   transition: all 0.2s;
 
   display: flex;
@@ -65,99 +61,59 @@ const StyledButton = styled.button`
   & svg {
     width: 1.6rem;
     height: 1.6rem;
-    color: var(--color-grey-400);
+    color: var(--color-grey-500);
     transition: all 0.3s;
   }
 `
 
-type MenuContextType = {
-  openId: string
-  open: (id: string) => void
-  close: () => void
-  position: { x: number; y: number }
-  setPosition: (position: { x: number; y: number }) => void
+interface MenuButtonProps {
+  icon?: React.ReactNode
+  label?: string
+  onClick?: () => void
+  disabled?: boolean
+  children?: React.ReactNode
 }
 
-const MenuContext = createContext<MenuContextType>(undefined)
+function Menu({ children }: { children: React.ReactNode }) {
+  const popoverRef = useRef<HTMLDivElement>(null)
+  const toggleRef = useRef<HTMLButtonElement>(null)
 
-function Menus({ children }) {
-  const [openId, setOpenId] = useState('false')
-  const [position, setPosition] = useState({ x: 0, y: 0 })
+  useEffect(() => {
+    const toggle = toggleRef.current
+    const popover = popoverRef.current
 
-  const open = setOpenId
-  const close = () => setOpenId('')
+    if (toggle && popover && 'interestForElement' in toggle) {
+      ;(toggle as any).interestForElement = popover
+    }
+  }, [])
+
   return (
-    <MenuContext.Provider
-      value={{ openId, open, close, position, setPosition }}
-    >
-      {children}
-    </MenuContext.Provider>
+    <StyledMenu>
+      <StyledToggle ref={toggleRef} aria-haspopup='menu'>
+        <HiEllipsisVertical />
+      </StyledToggle>
+
+      <StyledPopover ref={popoverRef} role='menu' popover='hint'>
+        {children}
+      </StyledPopover>
+    </StyledMenu>
   )
 }
 
-function Toggle({ id }) {
-  const { openId, open, close, setPosition } = useContext(MenuContext)
-  function handleClick(e) {
-    e.stopPropagation()
-    const rect = e.target.closest('button').getBoundingClientRect()
-    setPosition({ x: rect.x, y: rect.bottom })
-    openId === id && openId !== '' ? close() : open(id)
-  }
-  return (
-    <StyledToggle onClick={handleClick}>
-      <HiEllipsisVertical />
-    </StyledToggle>
-  )
-}
-
-function List({ id, children }) {
-  const { openId, position, close } = useContext(MenuContext)
-  const ref = useOutsideClick(close)
-  if (openId !== id) return null
-  return createPortal(
-    <StyledList
-      $position={position}
-      ref={ref as React.RefObject<HTMLUListElement>}
-    >
-      {children}
-    </StyledList>,
-    document.body,
-  )
-}
-
-function Button({
+function MenuButton({
   icon,
   label,
   onClick,
-  children,
   disabled,
-}: {
-  icon: any
-  label?: string
-  onClick?: () => void
-  children?: React.ReactNode
-  disabled?: boolean
-}) {
-  const { close } = useContext(MenuContext)
-  function handleClick() {
-    onClick?.()
-    close()
-  }
+  children,
+}: MenuButtonProps) {
   return (
-    <li>
-      <StyledButton onClick={handleClick} disabled={disabled}>
-        {icon} {label} {children}
-      </StyledButton>
-    </li>
+    <StyledButton onClick={onClick} disabled={disabled}>
+      {icon} {label} {children}
+    </StyledButton>
   )
 }
 
-function Menu({ children }) {
-  return <StyledMenu>{children}</StyledMenu>
-}
+Menu.Button = MenuButton
 
-Menus.Toggle = Toggle
-Menus.List = List
-Menus.Button = Button
-Menus.Menu = Menu
-export default Menus
+export default Menu
